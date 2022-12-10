@@ -26,30 +26,48 @@ def check_count(count):
     return (count + 20) % 40 == 0
 
 
-def get_signal_strength(data):
+def draw_pixel(x, count, screen_buffer):
+    draw = x - 1 <= (count % 40) <= x + 1
+    if draw:
+        screen_buffer.append("#")
+    else:
+        screen_buffer.append(".")
+
+
+def process_instructions(data):
+    screen_buffer = []
     count = 0
     x = 1
     strengths = []
     for instruction, arg in data:
         if "noop" == instruction:
+            draw_pixel(x, count, screen_buffer)
             count += 1
             if check_count(count):
-                print(f"Instruction count is {count}")
                 strengths.append(count * x)
             continue
 
         if "addx" == instruction:
             for i in range(2):
+                draw_pixel(x, count, screen_buffer)
                 count += 1
                 if check_count(count):
-                    print(f"Instruction count is {count}")
                     strengths.append(count * x)
                 if 1 == i:
                     x += arg
 
-    return sum(strengths)
+    return (sum(strengths), screen_buffer)
+
+
+def draw_buffer(buffer):
+    for i in range(len(buffer)):
+        print(buffer[i], end="")
+        if (i + 1) % 40 == 0:
+            print("")
 
 
 if __name__ == "__main__":
     data = load_data("day10-input.txt")
-    # print(f"Q1 signal strength is {sum(get_signal_strength(data))}")
+    print(f"Q1 signal strength is {process_instructions(data)[0]}")
+    print(f"Q2 sprite output is:")
+    draw_buffer(process_instructions(data)[1])
