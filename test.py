@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from day10.day10 import get_cycle_count, process_instructions, load_data
+from day11 import day11
 
 
 class Day10(TestCase):
@@ -25,3 +26,17 @@ class Day10(TestCase):
 
     def test_part2(self):
         self.assertEqual(process_instructions(self.samples[1])[1], self.sample_output)
+
+
+class Day11(TestCase):
+    def setUp(self) -> None:
+        self.samples = [
+            day11.load_data("day11/sample1.txt"),
+            day11.load_data("day11/input.txt"),
+        ]
+        return super().setUp()
+
+    def test_part_1(self):
+        self.assertNotEqual(self.samples[0], [])
+        self.assertEqual(day11.process_monkeys(self.samples[0], 20), 10605)
+        self.assertEqual(day11.process_monkeys(self.samples[1], 20), 58322)
