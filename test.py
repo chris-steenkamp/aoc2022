@@ -29,14 +29,20 @@ class Day10(TestCase):
 
 
 class Day11(TestCase):
-    def setUp(self) -> None:
-        self.samples = [
+    def test_part_1(self):
+        samples = [
             day11.load_data("day11/sample1.txt"),
             day11.load_data("day11/input.txt"),
         ]
-        return super().setUp()
+        self.assertNotEqual(samples[0], [])
+        self.assertEqual(day11.process_monkeys(samples[0], 20), 10605)
+        self.assertEqual(day11.process_monkeys(samples[1], 20), 58322)
 
-    def test_part_1(self):
-        self.assertNotEqual(self.samples[0], [])
-        self.assertEqual(day11.process_monkeys(self.samples[0], 20), 10605)
-        self.assertEqual(day11.process_monkeys(self.samples[1], 20), 58322)
+    def test_part_2(self):
+        samples = [
+            day11.load_data("day11/sample1.txt"),
+            # day11.load_data("day11/input.txt"),
+        ]
+        m = samples[0]
+        d = day11.process_monkeys(samples[0], 10000, 1)
+        self.assertEqual(d, 2713310158)

@@ -12,7 +12,11 @@ class Monkey:
     items_inspected: int = 0
 
 
+MODS = 1
+
+
 def load_data(path):
+    global MODS
     with open(path, "r") as f:
         data = []
         while True:
@@ -28,6 +32,8 @@ def load_data(path):
                     (int(monkey[5][26:]), int(monkey[4][25:])),
                 )
             )
+
+            MODS *= data[-1].divisible_by
 
     return data
 
@@ -45,12 +51,16 @@ def get_most_active(monkeys):
     return sorted(monkeys, key=lambda x: x.items_inspected, reverse=True)
 
 
-def process_monkeys(monkeys: "list[Monkey]", rounds: int):
+def process_monkeys(monkeys: "list[Monkey]", rounds: int, div: int = 3):
+    global M
     for _ in range(rounds):
         for monkey in monkeys:
             for item in monkey.items.copy():
                 worry_level = increase_worry_level(item, monkey.operation)
-                worry_level //= 3
+                if div == 1:
+                    worry_level %= MODS
+                else:
+                    worry_level //= div
 
                 next_monkey = monkey.next_monkey[0 == worry_level % monkey.divisible_by]
 
@@ -65,3 +75,5 @@ def process_monkeys(monkeys: "list[Monkey]", rounds: int):
 if __name__ == "__main__":
     data = load_data("input.txt")
     print(f"Answer to Q1 is {process_monkeys(data,20)}")
+    data = load_data("input.txt")
+    print(f"Answer to Q2 is {process_monkeys(data,10000, 1)}")
