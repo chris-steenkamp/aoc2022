@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from queue import SimpleQueue
+import sys
+from copy import deepcopy
 
 START = None
 END = None
@@ -107,6 +109,49 @@ def BFS(g):
     return []
 
 
+def BFS_v2(g):
+    a_s = {k: v for k, v in g.items() if v.label == "a"}
+
+    min = sys.maxsize
+
+    for a in deepcopy(a_s).values():
+        found_solution = False
+        a.distance = 0
+        q = SimpleQueue()
+        q.put(a)
+
+        while not q.empty() and not found_solution:
+            current: Node = q.get(block=False)
+
+            for n2 in current.edges:
+                next_node: Node = g[n2]
+
+                if next_node == END:
+                    path = []
+                    while current is not None:
+                        path.append(current)
+                        current = current.previous
+
+                    if len(path) < min:
+                        min = len(path)
+
+                    found_solution = True
+                    break
+
+                distance = current.distance + 1
+
+                if next_node.distance is None or next_node.distance > distance:
+                    next_node.distance = distance
+                    next_node.previous = current
+
+                    q.put(next_node)
+
+    return min
+
+
 if __name__ == "__main__":
     data = load_data("input.txt")
     print(f"Anwer to Q1 is {len(BFS(data))}")
+
+    data = load_data("input.txt")
+    print(f"Anwer to Q2 is {BFS_v2(data)}")

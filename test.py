@@ -53,6 +53,35 @@ class Day11(TestCase):
 
 class Day12(TestCase):
     def test_part_1(self):
-        samples = [day12.load_data("day12/sample1.txt")]
 
-        self.assertEqual(len(day12.BFS(samples[0])), 31)
+        self.assertEqual(
+            len(
+                day12.BFS(
+                    day12.load_data("day12/sample1.txt"),
+                )
+            ),
+            31,
+        )
+        self.assertEqual(
+            len(
+                day12.BFS(
+                    day12.load_data("day12/input.txt"),
+                )
+            ),
+            520,
+        )
+
+    def test_part_2(self):
+
+        self.assertEqual(
+            day12.BFS_v2(
+                day12.load_data("day12/sample1.txt"),
+            ),
+            29,
+        )
+        self.assertEqual(
+            day12.BFS_v2(
+                day12.load_data("day12/input.txt"),
+            ),
+            508,
+        )
