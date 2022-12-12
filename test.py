@@ -1,15 +1,16 @@
 from unittest import TestCase
 
-from day10.day10 import get_cycle_count, process_instructions, load_data
+from day10 import day10
 from day11 import day11
+from day12 import day12
 
 
 class Day10(TestCase):
     def setUp(self) -> None:
         self.samples = [
-            load_data("day10/day10-sample1.txt"),
-            load_data("day10/day10-sample2.txt"),
-            load_data("day10/day10-input.txt"),
+            day10.load_data("day10/day10-sample1.txt"),
+            day10.load_data("day10/day10-sample2.txt"),
+            day10.load_data("day10/day10-input.txt"),
         ]
 
         with open("day10/day10-sample-output.txt", "r") as f:
@@ -19,13 +20,15 @@ class Day10(TestCase):
         return super().setUp()
 
     def test_part1(self):
-        self.assertEqual(get_cycle_count(self.samples[0]), 5)
-        self.assertEqual(process_instructions(self.samples[0])[0], 0)
-        self.assertEqual(process_instructions(self.samples[1])[0], 13140)
-        self.assertEqual(process_instructions(self.samples[2])[0], 17840)
+        self.assertEqual(day10.get_cycle_count(self.samples[0]), 5)
+        self.assertEqual(day10.process_instructions(self.samples[0])[0], 0)
+        self.assertEqual(day10.process_instructions(self.samples[1])[0], 13140)
+        self.assertEqual(day10.process_instructions(self.samples[2])[0], 17840)
 
     def test_part2(self):
-        self.assertEqual(process_instructions(self.samples[1])[1], self.sample_output)
+        self.assertEqual(
+            day10.process_instructions(self.samples[1])[1], self.sample_output
+        )
 
 
 class Day11(TestCase):
@@ -46,3 +49,10 @@ class Day11(TestCase):
         m = samples[0]
         d = day11.process_monkeys(samples[0], 10000, 1)
         self.assertEqual(d, 2713310158)
+
+
+class Day12(TestCase):
+    def test_part_1(self):
+        samples = [day12.load_data("day12/sample1.txt")]
+
+        self.assertEqual(len(day12.BFS(samples[0])), 31)
