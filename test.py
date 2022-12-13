@@ -3,6 +3,7 @@ from unittest import TestCase
 from day10 import day10
 from day11 import day11
 from day12 import day12
+from day13 import day13
 
 
 class Day10(TestCase):
@@ -85,3 +86,38 @@ class Day12(TestCase):
             ),
             508,
         )
+
+
+class Day13(TestCase):
+    def setUp(self) -> None:
+        self.samples = [day13.load_data("day13/sample1.txt")]
+        return super().setUp()
+
+    def test_part_1(self):
+        self.assertEqual(day13.check_pair_order((1, 2)), -1)
+        self.assertEqual(day13.check_pair_order((1, 1)), 0)
+        self.assertEqual(day13.check_pair_order((2, 1)), 1)
+
+        self.assertEqual(day13.check_pair_order(([1, 1, 3, 1, 1], [1, 1, 5, 1, 1])), -1)
+        self.assertEqual(day13.check_pair_order(([1, 1, 3, 2, 1], [1, 1, 3, 2, 1])), 0)
+        self.assertEqual(day13.check_pair_order(([1, 1, 5, 1, 1], [1, 1, 3, 1, 1])), 1)
+
+        self.assertEqual(day13.check_pair_order(([[1], [2, 3, 4]], [[1], 4])), -1)
+        self.assertEqual(day13.check_pair_order(([9], [[8, 7, 6]])), 1)
+        self.assertEqual(
+            day13.check_pair_order(([[4, 4], 4, 4], [[4, 4], 4, 4, 4])), -1
+        )
+        self.assertEqual(day13.check_pair_order(([7, 7, 7, 7], [7, 7, 7])), 1)
+        self.assertEqual(day13.check_pair_order(([], [3])), -1)
+        self.assertEqual(day13.check_pair_order(([[[]]], [[]])), 1)
+        self.assertEqual(
+            day13.check_pair_order(
+                (
+                    [1, [2, [3, [4, [5, 6, 7]]]], 8, 9],
+                    [1, [2, [3, [4, [5, 6, 0]]]], 8, 9],
+                )
+            ),
+            1,
+        )
+
+        self.assertEqual(day13.sum_indices(self.samples[0]), 13)
