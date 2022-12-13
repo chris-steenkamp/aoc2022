@@ -49,7 +49,37 @@ def check_pair_order(pair) -> str:
         return check_pair_order((l, [r]))
 
 
+def sort_pairs(pairs):
+    pairs.append(([[2]], [[6]]))
+
+    data = []
+    for i in range(len(pairs)):
+        data.append(pairs[i][0])
+        data.append(pairs[i][1])
+
+    length = len(data)
+    swapped = True
+    while swapped:
+        swapped = False
+        for i in range(length - 1):
+            if check_pair_order((data[i], data[i + 1])) > 0:
+                data[i], data[i + 1] = data[i + 1], data[i]
+                swapped = True
+
+    return data
+
+
+def multiply_indices(pairs) -> int:
+    result = 1
+    for i, packet in enumerate(sort_pairs(pairs)):
+        if packet == [[2]] or packet == [[6]]:
+            result *= i + 1
+
+    return result
+
+
 if __name__ == "__main__":
     pairs = load_data(path.join(pathlib.Path(__file__).parent.resolve(), "input.txt"))
 
     print(f"Q1 answer is {sum_indices(pairs)}")
+    print(f"Q2 answer is {multiply_indices(pairs)}")

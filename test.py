@@ -1,4 +1,5 @@
 from unittest import TestCase
+import json
 
 from day10 import day10
 from day11 import day11
@@ -90,7 +91,10 @@ class Day12(TestCase):
 
 class Day13(TestCase):
     def setUp(self) -> None:
-        self.samples = [day13.load_data("day13/sample1.txt")]
+        self.samples = [
+            day13.load_data("day13/sample1.txt"),
+            day13.load_data("day13/input.txt"),
+        ]
         return super().setUp()
 
     def test_part_1(self):
@@ -121,3 +125,27 @@ class Day13(TestCase):
         )
 
         self.assertEqual(day13.sum_indices(self.samples[0]), 13)
+        self.assertEqual(day13.sum_indices(self.samples[1]), 5882)
+
+    def test_part_2(self):
+        with open("day13/sample1-output.txt", "r") as f:
+            output = [json.loads(l.strip()) for l in f.readlines()]
+
+        self.assertEqual(
+            day13.sort_pairs(
+                [
+                    (
+                        [1, [2, [3, [4, [5, 6, 7]]]], 8, 9],
+                        [1, [2, [3, [4, [5, 6, 0]]]], 8, 9],
+                    ),
+                ]
+            ),
+            [
+                [1, [2, [3, [4, [5, 6, 0]]]], 8, 9],
+                [1, [2, [3, [4, [5, 6, 7]]]], 8, 9],
+                [[2]],
+                [[6]],
+            ],
+        )
+        self.assertEqual(day13.sort_pairs(self.samples[0]), output)
+        self.assertEqual(day13.multiply_indices(self.samples[1]), 24948)
