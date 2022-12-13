@@ -13,7 +13,7 @@ class Node:
     label: str
     height: int
     edges: "list[Node]"
-    distance: int = None
+    distance: int = -1
     previous: "Node" = None
 
 
@@ -81,30 +81,25 @@ def load_data(path):
 def BFS(g):
     q = SimpleQueue()
     q.put(START)
-    explored = set()
 
     while not q.empty():
         current: Node = q.get(block=False)
-        explored.add(current.location)
 
-        for n2 in current.edges:
-            if n2 not in explored:
-                next_node = g[n2]
+        for next_node in [g[n] for n in current.edges]:
+            if next_node == END:
+                path = []
+                while current is not None:
+                    path.append(current)
+                    current = current.previous
+                return path
 
-                if next_node == END:
-                    path = []
-                    while current is not None:
-                        path.append(current)
-                        current = current.previous
-                    return path
+            distance = current.distance + 1
 
-                distance = current.distance + 1
+            if next_node.distance == -1 or next_node.distance > distance:
+                next_node.distance = distance
+                next_node.previous = current
 
-                if next_node.distance is None or next_node.distance > distance:
-                    next_node.distance = distance
-                    next_node.previous = current
-
-                    q.put(next_node)
+                q.put(next_node)
 
     return []
 
@@ -123,9 +118,7 @@ def BFS_v2(g):
         while not q.empty() and not found_solution:
             current: Node = q.get(block=False)
 
-            for n2 in current.edges:
-                next_node: Node = g[n2]
-
+            for next_node in [g[n] for n in current.edges]:
                 if next_node == END:
                     path = []
                     while current is not None:
@@ -140,7 +133,7 @@ def BFS_v2(g):
 
                 distance = current.distance + 1
 
-                if next_node.distance is None or next_node.distance > distance:
+                if next_node.distance == -1 or next_node.distance > distance:
                     next_node.distance = distance
                     next_node.previous = current
 
