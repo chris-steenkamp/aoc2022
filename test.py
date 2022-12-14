@@ -5,6 +5,7 @@ from day10 import day10
 from day11 import day11
 from day12 import day12
 from day13 import day13
+from day14 import day14
 
 
 class Day10(TestCase):
@@ -149,3 +150,29 @@ class Day13(TestCase):
         )
         self.assertEqual(day13.sort_pairs(self.samples[0]), output)
         self.assertEqual(day13.multiply_indices(self.samples[1]), 24948)
+
+
+class Day14(TestCase):
+    def setUp(self) -> None:
+        self.samples = [
+            day14.load_data("day14/sample1.txt"),
+            day14.load_data("day14/input.txt"),
+        ]
+        return super().setUp()
+
+    def test_part_1(self):
+        self.assertEqual(
+            day14.generate_cave(*self.samples[0]),
+            [
+                [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+                [".", ".", ".", ".", "#", ".", ".", ".", "#", "#"],
+                [".", ".", ".", ".", "#", ".", ".", ".", "#", "."],
+                [".", ".", "#", "#", "#", ".", ".", ".", "#", "."],
+                [".", ".", ".", ".", ".", ".", ".", ".", "#", "."],
+                [".", ".", ".", ".", ".", ".", ".", ".", "#", "."],
+                ["#", "#", "#", "#", "#", "#", "#", "#", "#", "."],
+            ],
+        )
