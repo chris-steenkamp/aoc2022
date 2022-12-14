@@ -161,8 +161,10 @@ class Day14(TestCase):
         return super().setUp()
 
     def test_part_1(self):
+        lines, width, height, d_x, d_y = self.samples[0]
+        cave = day14.generate_cave(lines, width, height, d_x, d_y)
         self.assertEqual(
-            day14.generate_cave(*self.samples[0]),
+            cave,
             [
                 [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
                 [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
@@ -176,3 +178,5 @@ class Day14(TestCase):
                 ["#", "#", "#", "#", "#", "#", "#", "#", "#", "."],
             ],
         )
+
+        self.assertEqual(day14.simulate_sand(cave, d_x, d_y, day14.Point(500, 0)), 24)

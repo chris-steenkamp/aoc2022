@@ -1,12 +1,23 @@
 import pathlib
 from os import path
 from dataclasses import dataclass
+from time import sleep
+from copy import deepcopy
 
 
 @dataclass
 class Point:
     x: int
     y: int
+
+    def move_down(self):
+        self.y += 1
+
+    def move_left(self):
+        self.x -= 1
+
+    def move_right(self):
+        self.x += 1
 
 
 @dataclass
@@ -76,21 +87,7 @@ def generate_cave(
     return cave
 
 
-def simulate_sand(cave, sand_location: Point = Point(500, 0), sand_char: str = "+"):
-    cave[sand_location.y - d_y][sand_location.x - d_x] = sand_char
-
-    return cave
-
-
-if __name__ == "__main__":
-    lines, width, height, d_x, d_y = load_data(
-        path.join(pathlib.Path(__file__).parent.resolve(), "input.txt")
-    )
-
-    cave = generate_cave(
-        lines, width, height, d_x, d_y, rock_char="🪨", air_char="  ", sand_char="🫘"
-    )
-
+def write_cave(cave):
     with open(
         path.join(pathlib.Path(__file__).parent.resolve(), "output.txt"), "wb"
     ) as f:
@@ -98,3 +95,84 @@ if __name__ == "__main__":
             for c in l:
                 f.write(bytes(c, "UTF-8"))
             f.write(bytes("\n", "utf-8"))
+
+
+def simulate_sand(
+    cave,
+    d_x,
+    d_y,
+    sand_location: Point,
+    air_char: str = ".",
+    sand_char: str = "+",
+    draw: bool = False,
+):
+    def get_next_move(current: Point, direction: int = 0) -> "tuple[Point, Point]":
+        next_p = deepcopy(current)
+        while True:
+            if direction == 0:
+                next_p.move_down()
+            elif direction == -1:
+                next_p.move_down()
+                next_p.move_left()
+            elif direction == 1:
+                next_p.move_down()
+                next_p.move_right()
+            elif direction == 2:
+                return (current, current)
+
+            if next_p.x < 0 or next_p.x >= max_x or next_p.y >= max_y:
+                return (current, None)
+
+            if cave[next_p.y][next_p.x] == air_char:
+                return (current, next_p)
+            else:
+                next_p = deepcopy(current)
+                direction = -1 if direction == 0 else 1 if direction == -1 else 2
+
+    def restart(starting_x, starting_y):
+        cave[starting_y][starting_x] = sand_char
+        current = Point(starting_x, starting_y)
+
+        return current
+
+    starting_x = sand_location.x - d_x
+    starting_y = sand_location.y - d_y
+    max_x = len(cave[0])
+    max_y = len(cave)
+    sand_count = 0
+    current = restart(starting_x, starting_y)
+    while True:
+        prev, current = get_next_move(current)
+
+        if current is None:
+            break
+
+        if prev != current:
+            cave[prev.y][prev.x] = air_char
+            cave[current.y][current.x] = sand_char
+        else:
+            current = restart(starting_x, starting_y)
+            sand_count += 1
+
+        if draw:
+            write_cave(cave)
+            sleep(0.1)
+
+    write_cave(cave)
+
+    return sand_count
+
+
+if __name__ == "__main__":
+    lines, width, height, d_x, d_y = load_data(
+        path.join(pathlib.Path(__file__).parent.resolve(), "input.txt")
+    )
+
+    rock = "🪨"
+    air = "🌑"
+    sand = "🫘"
+    cave = generate_cave(lines, width, height, d_x, d_y, rock_char=rock, air_char=air)
+
+    print(
+        f"Q1 answer is {simulate_sand(cave, d_x, d_y, Point(500, 0), air_char=air, sand_char=sand)}"
+    )

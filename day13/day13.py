@@ -79,7 +79,7 @@ def multiply_indices(pairs) -> int:
 
 
 if __name__ == "__main__":
-    pairs = load_data(path.join(pathlib.Path(__file__).parent.resolve(), "input.txt"))
+    pairs = load_data(path.join(pathlib.Path(__file__).parent.resolve(), "sample1.txt"))
 
     print(f"Q1 answer is {sum_indices(pairs)}")
     print(f"Q2 answer is {multiply_indices(pairs)}")
