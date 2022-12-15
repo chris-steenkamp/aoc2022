@@ -34,13 +34,13 @@ class Line:
         return abs(self.start.y - self.end.y) + 1
 
 
-def load_data(path):
-    MIN_X = 9999
+def load_data(path, initial_line: Line = None):
+    MIN_X = min(initial_line.start.x, initial_line.end.x) if initial_line else 99999
     MIN_Y = 0
-    MAX_X = -1
-    MAX_Y = MAX_X
+    MAX_X = max(initial_line.start.x, initial_line.end.x) if initial_line else -1
+    MAX_Y = max(initial_line.start.y, initial_line.end.y) if initial_line else -1
 
-    line_segments = []
+    line_segments = [initial_line] if initial_line else []
     with open(path, "r") as f:
         for lines in [l.strip().split(" -> ") for l in f]:
             prior_point = None
@@ -104,7 +104,7 @@ def simulate_sand(
     sand_location: Point,
     air_char: str = ".",
     sand_char: str = "+",
-    draw: bool = False,
+    save_frame: bool = False,
 ):
     def get_next_move(current: Point, direction: int = 0) -> "tuple[Point, Point]":
         next_p = deepcopy(current)
@@ -147,6 +147,10 @@ def simulate_sand(
         if current is None:
             break
 
+        if current.x == starting_x and current.y == starting_y:
+            sand_count += 1
+            break
+
         if prev != current:
             cave[prev.y][prev.x] = air_char
             cave[current.y][current.x] = sand_char
@@ -154,9 +158,8 @@ def simulate_sand(
             current = restart(starting_x, starting_y)
             sand_count += 1
 
-        if draw:
+        if save_frame:
             write_cave(cave)
-            sleep(0.1)
 
     write_cave(cave)
 
@@ -175,4 +178,14 @@ if __name__ == "__main__":
 
     print(
         f"Q1 answer is {simulate_sand(cave, d_x, d_y, Point(500, 0), air_char=air, sand_char=sand)}"
+    )
+
+    lines, width, height, d_x, d_y = load_data(
+        path.join(pathlib.Path(__file__).parent.resolve(), "input.txt"),
+        Line(Point(0, 166), Point(1000, 166)),
+    )
+    cave = generate_cave(lines, width, height, d_x, d_y, rock_char=rock, air_char=air)
+
+    print(
+        f"Q2 answer is {simulate_sand(cave, d_x, d_y, Point(500, 0), air_char=air, sand_char=sand)}"
     )

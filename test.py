@@ -157,6 +157,10 @@ class Day14(TestCase):
         self.samples = [
             day14.load_data("day14/sample1.txt"),
             day14.load_data("day14/input.txt"),
+            day14.load_data(
+                "day14/sample1.txt",
+                day14.Line(day14.Point(0, 11), day14.Point(1000, 11)),
+            ),
         ]
         return super().setUp()
 
@@ -180,3 +184,13 @@ class Day14(TestCase):
         )
 
         self.assertEqual(day14.simulate_sand(cave, d_x, d_y, day14.Point(500, 0)), 24)
+
+        lines, width, height, d_x, d_y = self.samples[1]
+        cave = day14.generate_cave(lines, width, height, d_x, d_y)
+        self.assertEqual(day14.simulate_sand(cave, d_x, d_y, day14.Point(500, 0)), 1016)
+        # 25402
+
+    def test_part_2(self):
+        lines, width, height, d_x, d_y = self.samples[2]
+        cave = day14.generate_cave(lines, width, height, d_x, d_y)
+        self.assertEqual(day14.simulate_sand(cave, d_x, d_y, day14.Point(500, 0)), 93)
