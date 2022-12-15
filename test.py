@@ -6,6 +6,7 @@ from day11 import day11
 from day12 import day12
 from day13 import day13
 from day14 import day14
+from day15 import day15
 
 
 class Day10(TestCase):
@@ -194,3 +195,16 @@ class Day14(TestCase):
         lines, width, height, d_x, d_y = self.samples[2]
         cave = day14.generate_cave(lines, width, height, d_x, d_y)
         self.assertEqual(day14.simulate_sand(cave, d_x, d_y, day14.Point(500, 0)), 93)
+
+
+class Day15(TestCase):
+    def setUp(self) -> None:
+        self.samples = [
+            day15.load_data("day15/sample1.txt"),
+            day15.load_data("day15/input.txt"),
+        ]
+        return super().setUp()
+
+    def test_part_1(self):
+        self.assertEqual(day15.calc_coverage_line(self.samples[0], 10), 26)
+        self.assertEqual(day15.calc_coverage_line(self.samples[1], 2000000), 5716881)
