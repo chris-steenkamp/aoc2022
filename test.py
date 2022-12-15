@@ -207,4 +207,8 @@ class Day15(TestCase):
 
     def test_part_1(self):
         self.assertEqual(day15.calc_coverage_line(self.samples[0], 10), 26)
-        self.assertEqual(day15.calc_coverage_line(self.samples[1], 2000000), 5716881)
+        # self.assertEqual(day15.calc_coverage_line(self.samples[1], 2000000), 5716881)
+
+    def test_part_2(self):
+        self.assertEqual(day15.calc_coverage_line_v2(self.samples[0], 20), 56000011)
+        # self.assertEqual(day15.calc_coverage_line_v2(self.samples[1], 4000000), 10852583132904)
