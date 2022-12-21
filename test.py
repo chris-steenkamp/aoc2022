@@ -233,3 +233,14 @@ class Day16(TestCase):
         day16.dfs(self.samples[1], "AA", 30, set(), {}, 0, "AA")
         w, _ = sorted(day16.PATHS)[-1]
         self.assertEqual(w, 1728)
+
+    def test_part_2(self):
+        day16.PATHS = []
+        day16.dfs_v2(self.samples[0], ("AA", "AA"), 26, set(), {}, 0, "('AA','AA')")
+        w, _ = sorted(day16.PATHS)[-1]
+        self.assertEqual(w, 1707)
+
+        day16.PATHS = []
+        day16.dfs_v2(self.samples[1], ("AA", "AA"), 26, set(), {}, 0, "('AA','AA')")
+        w, _ = sorted(day16.PATHS)[-1]
+        self.assertEqual(w, 2304)
