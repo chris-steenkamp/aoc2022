@@ -7,6 +7,7 @@ from day12 import day12
 from day13 import day13
 from day14 import day14
 from day15 import day15
+from day16 import day16
 
 
 class Day10(TestCase):
@@ -212,3 +213,23 @@ class Day15(TestCase):
     def test_part_2(self):
         self.assertEqual(day15.calc_coverage_line_v2(self.samples[0], 20), 56000011)
         # self.assertEqual(day15.calc_coverage_line_v2(self.samples[1], 4000000), 10852583132904)
+
+
+class Day16(TestCase):
+    def setUp(self) -> None:
+        self.samples = [
+            day16.load_data("day16/sample1.txt"),
+            day16.load_data("day16/input.txt"),
+        ]
+        return super().setUp()
+
+    def test_part_1(self):
+        day16.PATHS = []
+        day16.dfs(self.samples[0], "AA", 30, set(), {}, 0, "AA")
+        w, _ = sorted(day16.PATHS)[-1]
+        self.assertEqual(w, 1651)
+
+        day16.PATHS = []
+        day16.dfs(self.samples[1], "AA", 30, set(), {}, 0, "AA")
+        w, _ = sorted(day16.PATHS)[-1]
+        self.assertEqual(w, 1728)
