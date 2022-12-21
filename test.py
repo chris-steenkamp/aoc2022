@@ -8,6 +8,7 @@ from day13 import day13
 from day14 import day14
 from day15 import day15
 from day16 import day16
+from day17 import day17
 
 
 class Day10(TestCase):
@@ -244,3 +245,16 @@ class Day16(TestCase):
         day16.dfs_v2(self.samples[1], ("AA", "AA"), 26, set(), {}, 0, "('AA','AA')")
         w, _ = sorted(day16.PATHS)[-1]
         self.assertEqual(w, 2304)
+
+
+class Day17(TestCase):
+    def setUp(self) -> None:
+        self.samples = [
+            day17.load_data("day17/sample.txt"),
+            day17.load_data("day17/input.txt"),
+        ]
+        return super().setUp()
+
+    def test_part_1(self):
+        self.assertEqual(day17.simulate_rockfall(self.samples[0], 2022), 3068)
+        self.assertEqual(day17.simulate_rockfall(self.samples[1], 2022), 3127)
