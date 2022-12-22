@@ -258,3 +258,13 @@ class Day17(TestCase):
     def test_part_1(self):
         self.assertEqual(day17.simulate_rockfall(self.samples[0], 2022), 3068)
         self.assertEqual(day17.simulate_rockfall(self.samples[1], 2022), 3127)
+
+    def test_part_2(self):
+        self.assertEqual(day17.simulate_rockfall_v2(self.samples[0], 2022), 3068)
+        self.assertEqual(day17.simulate_rockfall_v2(self.samples[1], 2022), 3127)
+        self.assertEqual(
+            day17.simulate_rockfall_v2(self.samples[0], 1000000000000), 1514285714288
+        )
+        self.assertEqual(
+            day17.simulate_rockfall_v2(self.samples[1], 1000000000000), 1542941176480
+        )
