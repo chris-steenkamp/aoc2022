@@ -9,6 +9,7 @@ from day14 import day14
 from day15 import day15
 from day16 import day16
 from day17 import day17
+from day18 import day18
 
 
 class Day10(TestCase):
@@ -268,3 +269,21 @@ class Day17(TestCase):
         self.assertEqual(
             day17.simulate_rockfall_v2(self.samples[1], 1000000000000), 1542941176480
         )
+
+
+class Day18(TestCase):
+    def setUp(self) -> None:
+        self.samples = [
+            day18.load_data("day18/sample.txt"),
+            day18.load_data("day18/sample1.txt"),
+            day18.load_data("day18/input.txt"),
+        ]
+        return super().setUp()
+
+    def test_part_1(self):
+        self.assertEqual(day18.check_surface_area(self.samples[0]), 64)
+        self.assertEqual(day18.check_surface_area(self.samples[1]), 10)
+        self.assertEqual(day18.check_surface_area(self.samples[2]), 4536)
+
+    def test_part_2(self):
+        pass
