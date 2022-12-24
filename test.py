@@ -10,6 +10,7 @@ from day15 import day15
 from day16 import day16
 from day17 import day17
 from day18 import day18
+from day19 import day19
 
 
 class Day10(TestCase):
@@ -313,3 +314,35 @@ class Day18(TestCase):
             ),
             2606,
         )
+
+
+class Day19(TestCase):
+    def setUp(self) -> None:
+        self.samples = [
+            day19.load_data("day19/sample.txt"),
+            day19.load_data("day19/input.txt"),
+        ]
+        return super().setUp()
+
+    def test_part_1(self):
+        f = self.samples[0][0]
+        o = f.create_robot(day19.RobotType.ORE)
+        c = f.create_robot(day19.RobotType.CLAY)
+        ob = f.create_robot(day19.RobotType.OBSIDIAN)
+        g = f.create_robot(day19.RobotType.GEODE)
+
+        self.assertEqual(o.ore, 4)
+        self.assertEqual(o.clay, 0)
+        self.assertEqual(o.obsidian, 0)
+
+        self.assertEqual(c.ore, 2)
+        self.assertEqual(c.clay, 0)
+        self.assertEqual(c.obsidian, 0)
+
+        self.assertEqual(ob.ore, 3)
+        self.assertEqual(ob.clay, 14)
+        self.assertEqual(ob.obsidian, 0)
+
+        self.assertEqual(g.ore, 2)
+        self.assertEqual(g.clay, 0)
+        self.assertEqual(g.obsidian, 7)
