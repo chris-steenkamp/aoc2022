@@ -281,9 +281,35 @@ class Day18(TestCase):
         return super().setUp()
 
     def test_part_1(self):
-        self.assertEqual(day18.check_surface_area(self.samples[0]), 64)
-        self.assertEqual(day18.check_surface_area(self.samples[1]), 10)
-        self.assertEqual(day18.check_surface_area(self.samples[2]), 4536)
+        self.assertEqual(day18.check_surface_area(self.samples[0][0]), 64)
+        self.assertEqual(day18.check_surface_area(self.samples[1][0]), 10)
+        self.assertEqual(day18.check_surface_area(self.samples[2][0]), 4536)
 
     def test_part_2(self):
-        pass
+        self.assertEqual(
+            day18.check_surface_area_v2(
+                self.samples[0][1],
+                (0, 0, 0),
+                self.samples[0][2] - 1,
+                self.samples[0][3] + 1,
+            ),
+            58,
+        )
+        self.assertEqual(
+            day18.check_surface_area_v2(
+                self.samples[1][1],
+                (0, 0, 0),
+                self.samples[1][2] - 1,
+                self.samples[1][3] + 1,
+            ),
+            10,
+        )
+        self.assertEqual(
+            day18.check_surface_area_v2(
+                self.samples[2][1],
+                (0, 0, 0),
+                self.samples[2][2] - 1,
+                self.samples[2][3] + 1,
+            ),
+            2606,
+        )
