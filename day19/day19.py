@@ -4,7 +4,6 @@ from collections import defaultdict
 from dataclasses import dataclass
 from enum import Enum
 from os import path
-from copy import deepcopy
 
 BLUEPRINT_RE = re.compile(
     "Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian."
@@ -28,7 +27,6 @@ class Robot:
     ore: int
     clay: int
     obsidian: int
-    mineral_mined: int = 0
 
 
 class RobotFactory:
@@ -86,9 +84,9 @@ def create_robot(
 def get_weighted_sum(minerals) -> int:
     return (
         minerals[0]
-        + (minerals[1] * 100)
-        + (minerals[2] * 10000)
-        + (minerals[3] * 1000000)
+        + (minerals[1] * 1000)
+        + (minerals[2] * 1000000)
+        + (minerals[3] * 1000000000)
     )
 
 
@@ -161,3 +159,15 @@ if __name__ == "__main__":
         dfs(data[i], 24, robots, starting_minerals, {})
 
     print(f"Q1 answer is {sum([k * v for k,v in MAX_GEODES_MINED.items()])}")
+
+    # reset calculated max values
+    MAX_GEODES_MINED = defaultdict(int)
+
+    for i in range(3):
+        dfs(data[i], 32, robots, starting_minerals, {})
+
+    prod = 1
+    for v in MAX_GEODES_MINED.values():
+        prod *= v
+
+    print(f"Q2 answer is {prod}")
