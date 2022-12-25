@@ -11,6 +11,7 @@ from day16 import day16
 from day17 import day17
 from day18 import day18
 from day19 import day19
+from day20 import day20
 
 
 class Day10(TestCase):
@@ -346,3 +347,22 @@ class Day19(TestCase):
         self.assertEqual(g.ore, 2)
         self.assertEqual(g.clay, 0)
         self.assertEqual(g.obsidian, 7)
+
+
+class Day20(TestCase):
+    def setUp(self) -> None:
+        self.samples = [
+            day20.load_data("day20/sample.txt"),
+            day20.load_data("day20/input.txt"),
+        ]
+        return super().setUp()
+
+    def test_part_1(self):
+        self.assertEqual(
+            [n.value for n in day20.convert_to_list(day20.unmix(self.samples[0]))],
+            [1, 2, -3, 4, 0, 3, -2],
+        )
+        self.assertEqual(day20.get_grove_coordinates(self.samples[0]), 3)
+        self.assertEqual(
+            day20.get_grove_coordinates(day20.unmix(self.samples[1])), 13183
+        )
