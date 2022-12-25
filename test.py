@@ -354,9 +354,23 @@ class Day20(TestCase):
         self.samples = [
             day20.load_data("day20/sample.txt"),
             day20.load_data("day20/input.txt"),
+            day20.load_data("day20/sample.txt", 811589153),
+            day20.load_data("day20/input.txt", 811589153),
         ]
         return super().setUp()
 
     def test_part_1(self):
-        self.assertEqual(day20.get_grove_coordinates(day20.mix(self.samples[0])), 3)
-        self.assertEqual(day20.get_grove_coordinates(day20.mix(self.samples[1])), 13183)
+        self.assertEqual(day20.get_grove_coordinates(day20.mix_v2(self.samples[0])), 3)
+        self.assertEqual(
+            day20.get_grove_coordinates(day20.mix_v2(self.samples[1])), 13183
+        )
+
+    def test_part_2(self):
+        self.assertEqual(
+            day20.get_grove_coordinates(day20.mix_v2(self.samples[2], 10)),
+            1623178306,
+        )
+        self.assertEqual(
+            day20.get_grove_coordinates(day20.mix_v2(self.samples[3], 10)),
+            6676132372578,
+        )

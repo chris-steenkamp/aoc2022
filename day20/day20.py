@@ -126,10 +126,31 @@ def convert_to_list(coordinates):
     return positions
 
 
-def get_grove_coordinates(coordinates: CircularList) -> int:
-    mixed_cycle = cycle(convert_to_list(coordinates))
+def mix_v2(coordinates: CircularList, repetitions: int = 1) -> "list[Node]":
+    # Use direct array manipulation because it is much faster.
+    # Also convert the heavy Node class to a lightweight list (~60 secs -> ~6 secs)
+    lightweight_list = [
+        (n.value, ix) for ix, n in enumerate(convert_to_list(coordinates))
+    ]
+    mixed_list = list(lightweight_list)
 
-    while next(mixed_cycle).value != 0:
+    for _ in range(repetitions):
+        for node in lightweight_list:
+            ix = mixed_list.index(node)
+            mixed_list.pop(ix)
+            new_ix = (ix + node[0]) % len(mixed_list)
+            mixed_list.insert(new_ix, node)
+
+    return mixed_list
+
+
+def get_grove_coordinates(coordinates) -> int:
+    if isinstance(coordinates, CircularList):
+        mixed_cycle = cycle([n.value for n in convert_to_list(coordinates)])
+    else:
+        mixed_cycle = cycle([n[0] for n in coordinates])
+
+    while next(mixed_cycle) != 0:
         pass
 
     coords = []
@@ -138,11 +159,16 @@ def get_grove_coordinates(coordinates: CircularList) -> int:
         for _ in range(1000):
             p = next(mixed_cycle)
 
-        coords.append(p.value)
+        coords.append(p)
 
     return sum(coords)
 
 
 if __name__ == "__main__":
     data = load_data(path.join(pathlib.Path(__file__).parent.resolve(), "input.txt"))
-    print(f"Q1 answer is {get_grove_coordinates(mix(data))}")
+    print(f"Q1 answer is {get_grove_coordinates(mix_v2(data))}")
+
+    data = load_data(
+        path.join(pathlib.Path(__file__).parent.resolve(), "input.txt"), 811589153
+    )
+    print(f"Q2 answer is {get_grove_coordinates(mix_v2(data, 10))}")
