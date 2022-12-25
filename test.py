@@ -12,6 +12,7 @@ from day17 import day17
 from day18 import day18
 from day19 import day19
 from day20 import day20
+from day21 import day21
 
 
 class Day10(TestCase):
@@ -374,3 +375,16 @@ class Day20(TestCase):
             day20.get_grove_coordinates(day20.mix_v2(self.samples[3], 10)),
             6676132372578,
         )
+
+
+class Day21(TestCase):
+    def setUp(self) -> None:
+        self.samples = [
+            day21.load_data("day21/sample.txt"),
+            day21.load_data("day21/input.txt"),
+        ]
+        return super().setUp()
+
+    def test_part_1(self):
+        self.assertEqual(day21.calculate(self.samples[0], "root"), 152)
+        self.assertEqual(day21.calculate(self.samples[1], "root"), 309248622142100)
