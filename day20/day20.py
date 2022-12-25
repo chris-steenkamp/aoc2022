@@ -68,18 +68,18 @@ class CircularList:
         return self.print_list()
 
 
-def load_data(path: str) -> "CircularList":
+def load_data(path: str, decryption_key: int = 1) -> "CircularList":
     data = CircularList()
     with open(path) as f:
-        for value in [int(l.strip()) for l in f.readlines()]:
+        for value in [int(l.strip()) * decryption_key for l in f.readlines()]:
             data.push_right(value)
     return data
 
 
-def unmix(coordinates: CircularList) -> CircularList:
+def mix(coordinates: CircularList) -> CircularList:
     positions = convert_to_list(coordinates)
 
-    for ix, node in enumerate(positions):
+    for node in positions:
         # move node left or right by its value
         if node.value > 0:
             for _ in range(node.value):
@@ -129,12 +129,10 @@ def convert_to_list(coordinates):
 def get_grove_coordinates(coordinates: CircularList) -> int:
     mixed_cycle = cycle(convert_to_list(coordinates))
 
+    while next(mixed_cycle).value != 0:
+        pass
+
     coords = []
-    p = next(mixed_cycle).value
-    while p != 0:
-        p = next(mixed_cycle).value
-        if p == 0:
-            break
 
     for _ in range(3):
         for _ in range(1000):
@@ -147,4 +145,4 @@ def get_grove_coordinates(coordinates: CircularList) -> int:
 
 if __name__ == "__main__":
     data = load_data(path.join(pathlib.Path(__file__).parent.resolve(), "input.txt"))
-    print(f"Q1 answer is {get_grove_coordinates(unmix(data))}")
+    print(f"Q1 answer is {get_grove_coordinates(mix(data))}")

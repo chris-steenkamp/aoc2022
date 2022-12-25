@@ -358,11 +358,5 @@ class Day20(TestCase):
         return super().setUp()
 
     def test_part_1(self):
-        self.assertEqual(
-            [n.value for n in day20.convert_to_list(day20.unmix(self.samples[0]))],
-            [1, 2, -3, 4, 0, 3, -2],
-        )
-        self.assertEqual(day20.get_grove_coordinates(self.samples[0]), 3)
-        self.assertEqual(
-            day20.get_grove_coordinates(day20.unmix(self.samples[1])), 13183
-        )
+        self.assertEqual(day20.get_grove_coordinates(day20.mix(self.samples[0])), 3)
+        self.assertEqual(day20.get_grove_coordinates(day20.mix(self.samples[1])), 13183)
