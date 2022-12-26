@@ -388,3 +388,12 @@ class Day21(TestCase):
     def test_part_1(self):
         self.assertEqual(day21.calculate(self.samples[0], "root"), 152)
         self.assertEqual(day21.calculate(self.samples[1], "root"), 309248622142100)
+
+    def test_part_2(self):
+        self.samples[0]["root"]["op"] = day21.FN_MAP["="]
+        self.samples[0]["humn"]["op"] = lambda x, y: 301
+        self.assertEqual(day21.calculate(self.samples[0], "root"), True)
+
+        self.samples[1]["root"]["op"] = day21.FN_MAP["="]
+        self.samples[1]["humn"]["op"] = lambda x, y: 3757272361782
+        self.assertEqual(day21.calculate(self.samples[1], "root"), True)
