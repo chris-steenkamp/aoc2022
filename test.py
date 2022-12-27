@@ -13,6 +13,7 @@ from day18 import day18
 from day19 import day19
 from day20 import day20
 from day21 import day21
+from day22 import day22
 
 
 class Day10(TestCase):
@@ -397,3 +398,22 @@ class Day21(TestCase):
         self.samples[1]["root"]["op"] = day21.FN_MAP["="]
         self.samples[1]["humn"]["op"] = lambda x, y: 3757272361782
         self.assertEqual(day21.calculate(self.samples[1], "root"), True)
+
+
+class Day22(TestCase):
+    def test_part_1(self):
+        self.assertEqual(day22.next_direction(">", "R"), "v")
+        self.assertEqual(day22.next_direction("v", "R"), "<")
+        self.assertEqual(day22.next_direction("<", "R"), "^")
+        self.assertEqual(day22.next_direction("^", "R"), ">")
+        self.assertEqual(day22.next_direction(">", "L"), "^")
+        self.assertEqual(day22.next_direction("^", "L"), "<")
+        self.assertEqual(day22.next_direction("<", "L"), "v")
+        self.assertEqual(day22.next_direction("v", "L"), ">")
+        self.assertEqual(day22.next_direction("v", "S"), "v")
+
+        sample = day22.load_data("day22/sample.txt")
+        self.assertEqual(day22.generate_password(*sample), 6032)
+
+        inputs = day22.load_data("day22/input.txt")
+        self.assertEqual(day22.generate_password(*inputs), 155060)
