@@ -65,31 +65,29 @@ def next_direction(current_direction: str, change: str) -> str:
 def generate_password(
     board: "list[tuple[str,int,int]]", moves_list: "list[tuple[int,str]]"
 ):
-    def move_horizonally(x: int, y: int) -> bool:
-        board_start_x = ROW_BOUNDS[y][0]
-        board_end_x = ROW_BOUNDS[y][1]
-        check_x = (x % (board_end_x - board_start_x + 1)) + board_start_x
-        if board[y][check_x] in [" ", "#"]:
-            return False, x
+    def move(x: int, y: int, direction):
+        if direction in ["<", ">"]:
+            board_start_x, board_end_x = ROW_BOUNDS[y]
+            next_x = (
+                (x + (1 if ">" == direction else -1 if "<" == direction else 0))
+                % (board_end_x - board_start_x + 1)
+            ) + board_start_x
+            next_y = y
+        else:
+            board_start_y, board_end_y = COLUMN_BOUNDS[x]
+            next_y = (
+                (y + (1 if "v" == direction else -1 if "^" == direction else 0))
+                % (board_end_y - board_start_y + 1)
+            ) + board_start_y
+            next_x = x
+        if board[next_y][next_x] in [" ", "#"]:
+            return False, x, y
 
-        board[y] = "".join(
-            [direction if ix == check_x else c for ix, c in enumerate(board[y])]
+        board[next_y] = "".join(
+            [direction if ix == next_x else c for ix, c in enumerate(board[next_y])]
         )
 
-        return True, check_x
-
-    def move_vertically(x: int, y: int) -> bool:
-        board_start_y = COLUMN_BOUNDS[x][0]
-        board_end_y = COLUMN_BOUNDS[x][1]
-        check_y = (y % (board_end_y - board_start_y + 1)) + board_start_y
-        if board[check_y][x] in [" ", "#"]:
-            return False, y
-
-        board[check_y] = "".join(
-            [direction if ix == x else c for ix, c in enumerate(board[check_y])]
-        )
-
-        return True, check_y
+        return True, next_x, next_y
 
     y = 0
     # start at the first open position in the first line
@@ -102,24 +100,16 @@ def generate_password(
         # )
 
         for _ in range(steps):
-            if direction in [">", "<"]:
-                next_x = x + (1 if ">" == direction else -1 if "<" == direction else 0)
-                moved, next_x = move_horizonally(next_x, y)
-                if moved:
-                    x = next_x
-                else:
-                    break
+            moved, next_x, next_y = move(x, y, direction)
+            if moved:
+                x = next_x
+                y = next_y
             else:
-                next_y = y + (1 if "v" == direction else -1 if "^" == direction else 0)
-                moved, next_y = move_vertically(x, next_y)
-                if moved:
-                    y = next_y
-                else:
-                    break
+                break
 
         direction = next_direction(direction, next_dir)
         # update the current tile with the changed direction
-        move_horizonally(x, y)
+        move(x, y, direction)
 
     return 1000 * (y + 1) + 4 * (x + 1) + DIRS.index(direction)
 
