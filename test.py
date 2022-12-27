@@ -417,3 +417,49 @@ class Day22(TestCase):
 
         inputs = day22.load_data("day22/input.txt")
         self.assertEqual(day22.generate_password(*inputs), 155060)
+
+    def test_part_2(self):
+        # Check moving up from face 1
+        self.assertEqual(day22.map_cube_coords(52, 0, "^", 50), (0, 152, ">"))
+        # Check moving left from face 1
+        self.assertEqual(day22.map_cube_coords(50, 2, "<", 50), (0, 147, ">"))
+
+        # Check moving up from face 2
+        self.assertEqual(day22.map_cube_coords(147, 0, "^", 50), (47, 199, "^"))
+        # Check moving right from face 2
+        self.assertEqual(day22.map_cube_coords(149, 1, ">", 50), (99, 148, "<"))
+        # Check moving down from face 2
+        self.assertEqual(day22.map_cube_coords(102, 49, "v", 50), (99, 52, "<"))
+
+        # Check moving right from face 3
+        self.assertEqual(day22.map_cube_coords(99, 52, ">", 50), (102, 49, "^"))
+        # Check moving left from face 3
+        self.assertEqual(day22.map_cube_coords(50, 52, "<", 50), (2, 100, "v"))
+
+        # Check moving up from face 4
+        self.assertEqual(day22.map_cube_coords(2, 100, "^", 50), (50, 52, ">"))
+        # Check moving left from face 4
+        self.assertEqual(day22.map_cube_coords(0, 147, "<", 50), (50, 2, ">"))
+
+        # Check moving right from face 5
+        self.assertEqual(day22.map_cube_coords(99, 148, ">", 50), (149, 1, "<"))
+        # Check moving down from face 5
+        self.assertEqual(day22.map_cube_coords(52, 149, "v", 50), (49, 152, "<"))
+
+        # Check moving down from face 6
+        self.assertEqual(day22.map_cube_coords(47, 199, "v", 50), (147, 0, "v"))
+        # Check moving right from face 6
+        self.assertEqual(day22.map_cube_coords(49, 152, ">", 50), (52, 149, "^"))
+        # Check moving left from face 6
+        self.assertEqual(day22.map_cube_coords(0, 152, "<", 50), (52, 0, "v"))
+
+        # Check moving right from face 4 on test cube ends up going down on face 6
+        self.assertEqual(day22.map_cube_coords(11, 5, ">", 4), (14, 8, "v"))
+        # Check moving up from face 2 on test cube ends up going right on face 1
+        self.assertEqual(day22.map_cube_coords(1, 4, "^", 4), (8, 1, ">"))
+        # Check moving left from face 1 on test cube ends up going down on face 2
+        self.assertEqual(day22.map_cube_coords(8, 1, "<", 4), (1, 4, "v"))
+
+        inputs = day22.load_data("day22/input.txt")
+
+        self.assertEqual(day22.generate_password(*inputs, version=2), 3479)
